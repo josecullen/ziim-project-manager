@@ -1,0 +1,21 @@
+<div class="col-xs-12" *ngFor="#projectStructure of projectRoot.projectStructures">
+	<h1>{{projectStructure.name}}</h1>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Pisos</th>					
+				<th *ngFor="#targetDir of projectStructure.targetDirectories">{{targetDir.name}}<th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="#floor of createFloors(projectStructure); #p = index">
+				<td>Piso {{p}}</td>
+				<td *ngFor="#file of floor.files">
+					<a (click)="runFile(file.path)">{{file.name}}</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>

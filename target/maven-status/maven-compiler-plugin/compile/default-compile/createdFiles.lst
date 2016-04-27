@@ -1,0 +1,7 @@
+model\FileBase.class
+model\ProjectStructure.class
+webapp\vim_manager_app\App.class
+webapp\vim_manager_app\App$PATH.class
+model\ProjectRoot.class
+model\TargetDirectory.class
+webapp\vim_manager_app\FileFilter.class
