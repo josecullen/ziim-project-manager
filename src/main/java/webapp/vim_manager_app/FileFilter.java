@@ -27,29 +27,31 @@ public class FileFilter {
 		projectRoot.setPath(file.getAbsolutePath());
 		ObjectMapper mapper = new ObjectMapper();
 		
-		rootFiles.forEach(rootfile ->{			
-			Arrays.asList(rootfile.listFiles()).forEach(subfile ->{
-				if(subfile.isDirectory() && subfile.getName().equals(target)){
-					ProjectStructure projectStructure = new ProjectStructure();
-					projectStructure.setName(rootfile.getName());
-					projectStructure.setPath(rootfile.getAbsolutePath());
-					projectStructure.setTarget(target);
-					
-					Arrays.asList(subfile.listFiles()).forEach(targetDir ->{
-						TargetDirectory targetDirectory = new TargetDirectory();
-					
-						targetDirectory.setName(targetDir.getName());
-						targetDirectory.setPath(targetDir.getAbsolutePath());
-						Arrays.asList(targetDir.listFiles()).forEach(targetFiles ->{
-							targetDirectory.getFiles()
-								.add(new FileBase(targetFiles.getName(), targetFiles.getAbsolutePath()));
+		rootFiles.forEach(rootfile ->{
+			if(rootfile.isDirectory()){
+				Arrays.asList(rootfile.listFiles()).forEach(subfile ->{
+					if(subfile.isDirectory() && subfile.getName().equals(target)){
+						ProjectStructure projectStructure = new ProjectStructure();
+						projectStructure.setName(rootfile.getName());
+						projectStructure.setPath(rootfile.getAbsolutePath());
+						projectStructure.setTarget(target);
+						
+						Arrays.asList(subfile.listFiles()).forEach(targetDir ->{
+							TargetDirectory targetDirectory = new TargetDirectory();
+						
+							targetDirectory.setName(targetDir.getName());
+							targetDirectory.setPath(targetDir.getAbsolutePath());
+							Arrays.asList(targetDir.listFiles()).forEach(targetFiles ->{
+								targetDirectory.getFiles()
+									.add(new FileBase(targetFiles.getName(), targetFiles.getAbsolutePath()));
+							});						
+							projectStructure.getTargetDirectories().add(targetDirectory);
 						});						
-						projectStructure.getTargetDirectories().add(targetDirectory);
-					});						
-					projectRoot.getProjectStructures().add(projectStructure);
-					
-				}
-			});
+						projectRoot.getProjectStructures().add(projectStructure);
+						
+					}
+				});
+			}			
 		});
 		
 		JsonObject projectRootJson = new JsonObject(mapper.writeValueAsString(projectRoot));
