@@ -1,8 +1,6 @@
 package webapp.vim_manager_app;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -15,7 +13,6 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.impl.StaticHandlerImpl;
 import io.vertx.ext.web.impl.RouterImpl;
 import model.Configs;
-import model.ProjectRoot;
 
 /**
  * Hello world!
@@ -26,7 +23,8 @@ public class App {
 	static Logger logger = Logger.getGlobal();
     private static final int PORT = 8010;
     private static Map<String, String> configs = Configs.configs();
-    
+    private static HttpServer server;
+    private static Vertx vertx;
     
     enum PATH{
     	run, 
@@ -43,9 +41,9 @@ public class App {
 
 		logger.info("Inicio");
 		
-    	Vertx vertx = Vertx.factory.vertx();
+    	vertx = Vertx.factory.vertx();
     	
-		HttpServer server = vertx.createHttpServer();
+		server = vertx.createHttpServer();
 		
 		Router router = new RouterImpl(vertx);
 		
@@ -111,8 +109,13 @@ public class App {
 		router.route("/*").handler(staticHandler);
 		server.requestHandler(router::accept).listen(PORT);
 		logger.info("Server open in port " + PORT);
-		logger.info("No arranca esto...");
+		
     }
+	
+	public static void close(){
+		vertx.close();
+		server.close();
+	}
 	
 	private static String getExtension(String path) {
 		String result = "";
