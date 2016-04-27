@@ -1,8 +1,6 @@
-abr 27, 2016 12:19:13 AM webapp.vim_manager_app.App main
+abr 27, 2016 1:09:10 AM webapp.vim_manager_app.App main
 INFO: Inicio
-abr 27, 2016 12:19:15 AM webapp.vim_manager_app.App main
+abr 27, 2016 1:09:11 AM webapp.vim_manager_app.App main
 INFO: Server open in port 8010
-abr 27, 2016 12:19:15 AM webapp.vim_manager_app.App main
+abr 27, 2016 1:09:11 AM webapp.vim_manager_app.App main
 INFO: No arranca esto...
-abr 27, 2016 12:19:24 AM webapp.vim_manager_app.App lambda$2
-INFO: run

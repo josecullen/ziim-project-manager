@@ -1,6 +1,8 @@
 package webapp.vim_manager_app;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -13,6 +15,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.impl.StaticHandlerImpl;
 import io.vertx.ext.web.impl.RouterImpl;
 import model.Configs;
+import model.ProjectRoot;
 
 /**
  * Hello world!
@@ -26,7 +29,9 @@ public class App {
     
     
     enum PATH{
-    	run, project_from_string
+    	run, 
+    	project_from_string,
+    	project_directory
     }
 	public static void main( String[] args ) throws IOException {
 		
@@ -53,7 +58,6 @@ public class App {
 			String path = context.request().params().get("path");
 			
 			try {
-				System.out.println(configs.get("txt"));
 				String command = "\""+configs.get(getExtension(path))+"\" "+ "\""+path+"\"";
 				logger.info(command);
 				Runtime rt = Runtime.getRuntime();
@@ -82,6 +86,22 @@ public class App {
 			context.response().end(files.encode());
 		});
 		
+		router.route("/"+PATH.project_directory).handler(context ->{
+			String projectDirectory = configs.get("project-directory");
+			String targets = configs.get("targets");
+			
+			JsonObject files = new JsonObject();
+			if(projectDirectory != null && targets != null){
+				try {
+					files = FileFilter.getListFiles(projectDirectory, targets);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			context.response().end(files.encode());
+		
+		});
 		
 		StaticHandlerImpl staticHandler = new StaticHandlerImpl();
 		staticHandler.setCachingEnabled(false);

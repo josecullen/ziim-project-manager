@@ -1,0 +1,2 @@
+project-directory=C:\\Users\\jcullen\\Documents\\joseji\\TRABAJOS
+targets=CAD
