@@ -34,22 +34,11 @@
                <children>
                   <VBox prefHeight="2.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Directorios Target" />
-                        <HBox>
-                           <children>
-                              <TextField fx:id="txtTargetDirectories" promptText="Escriba separando con espacios cada directorio" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                        <HBox fx:id="targetDirectoryBox" prefHeight="100.0" prefWidth="200.0">
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding>
-                        </HBox>
+                        <HBox />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <Separator prefHeight="27.0" prefWidth="501.0" />
             <HBox prefWidth="200.0">
                <children>
                   <VBox fx:id="boxExtensions" prefHeight="20.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
@@ -58,10 +47,10 @@
                            <children>
                               <VBox HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label text="Programas y Extensiones" />
+                                    <Label text="Directorios Target, Programas y Extensiones" />
                                  </children>
                               </VBox>
-                              <Button alignment="BASELINE_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="+" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="btnAddTarget" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="+" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>

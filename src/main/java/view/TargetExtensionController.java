@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 public class TargetExtensionController extends HBox {
@@ -18,8 +19,9 @@ public class TargetExtensionController extends HBox {
 	@FXML TextField txtExtension;
 	@FXML TextField txtProgramPath;
 	@FXML Button btnSelectProgram;
+	@FXML Button btnRemove;
 	
-	public TargetExtensionController(String targetDirectory) {
+	public TargetExtensionController() {
 		
 		
 		
@@ -31,13 +33,15 @@ public class TargetExtensionController extends HBox {
 		} catch (IOException exc) {
 			exc.printStackTrace();
 		}
-		txtTargetDirectory.setText(targetDirectory);
 		
 		btnSelectProgram.setOnAction(event ->{
 			File program = fileChooser.showOpenDialog(null);
 			txtProgramPath.setText(program.getAbsolutePath());
 		});
 		
+		btnRemove.setOnAction(event ->{
+			((VBox)this.getParent()).getChildren().remove(this);
+		});
 		
 	}
 	
