@@ -68,6 +68,9 @@
       </Label>
    </top>
    <padding>
-      <Insets left="50.0" right="50.0" top="15.0" />
+      <Insets bottom="15.0" left="50.0" right="50.0" top="15.0" />
    </padding>
+   <bottom>
+      <Button fx:id="btnSave" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Guardar" BorderPane.alignment="CENTER_RIGHT" />
+   </bottom>
 </fx:root>

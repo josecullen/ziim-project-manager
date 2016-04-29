@@ -1,5 +1,5 @@
 import {Component, Input} from 'angular2/core';
-import {ProjectRoot, ProjectStructure, TargetDirectory} from './models';
+import {ProjectRoot, WorkspaceRoot, TargetDirectory, SystemDirectory} from './models';
 import {AppServices} from './services';
 import {HTTP_PROVIDERS} from 'angular2/http';
 
@@ -10,22 +10,26 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 
 })
 export class ProjectListComponent {
-	@Input() projectRoot:ProjectRoot = new ProjectRoot();
+	@Input() workspaceRoot:WorkspaceRoot = new WorkspaceRoot();
 
 	constructor(private services:AppServices){}
 
-	createFloors(projectStructure:ProjectStructure):Array<TargetDirectory>{
-		let floors:Array<TargetDirectory> = new Array();
+	createFloors(targetDirectory:TargetDirectory):Array<SystemDirectory>{
+		let floors:Array<SystemDirectory> = new Array();
 
-		projectStructure.targetDirectories.forEach(function(targetDirectory){
-			targetDirectory.files.forEach(function(file){
+		targetDirectory.systemDirectories.forEach(function(systemDirectory){
+			systemDirectory.files.forEach(function(file){
 				let floorNumber:number = parseInt(file.name.split("-")[0]);
 				
 				if(floors.length -1 < floorNumber){
-					floors.push(new TargetDirectory());
+					floors.push(new SystemDirectory());
 				}
-
-				floors[floorNumber].files.push(file);
+				if(floorNumber == 99){
+					floors[floors.length-1].files.push(file);	
+				}else{
+					floors[floorNumber].files.push(file);	
+				}
+				
 			});
 		});
 

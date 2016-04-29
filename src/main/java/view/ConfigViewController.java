@@ -2,6 +2,8 @@ package view;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -14,12 +16,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import model.Configs;
+import model.config.*;
 
 public class ConfigViewController extends BorderPane {
 	
 	@FXML TextField txtWorkspacePath;
 	@FXML Button btnSelectWorkspace;
 	@FXML Button btnAddTarget;
+	@FXML Button btnSave;
 	@FXML HBox targetDirectoryBox;
 	
 	@FXML VBox boxExtensions;
@@ -37,6 +42,8 @@ public class ConfigViewController extends BorderPane {
 			exc.printStackTrace();
 		}
 		
+		setFromConfig();
+		
 		btnSelectWorkspace.setOnAction(event ->{
 			File chooseFile = directoryChooser.showDialog(null);
 			txtWorkspacePath.setText(chooseFile.getAbsolutePath());
@@ -48,7 +55,62 @@ public class ConfigViewController extends BorderPane {
 			targetExtension.txtTargetDirectory.requestFocus();
 		});
 		
+		btnSave.setOnAction(event ->{
+			Config config = new Config();
+			ConfigWorkspace workspace = new ConfigWorkspace();
+			
+			workspace.setPath(txtWorkspacePath.getText());
+			config.setWorkspace(workspace);
+			
+			boxExtensions.getChildren().filtered(predicate ->{
+				return predicate instanceof TargetExtensionController;
+			}).forEach(targetExtension ->{
+				
+				TargetExtensionController extensionView = ((TargetExtensionController)targetExtension);
+				
+				ConfigTargetDirectory targetDir = new ConfigTargetDirectory();
+				targetDir.setExtension(extensionView.txtExtension.getText());
+				targetDir.setName(extensionView.txtTargetDirectory.getText());
+				
+				ConfigExtension extension = new ConfigExtension();
+				extension.setName(extensionView.txtExtension.getText());
+				extension.setProgramPath(extensionView.txtProgramPath.getText());
+				
+				config.getExtensions().add(extension);
+				workspace.getTargetDirectories().add(targetDir);
+			});
+			
+			Configs.save(config);
+			
+		});
+		
 	}
+
+	private void setFromConfig() {
+		Config config = Configs.getConfig();
+		txtWorkspacePath.setText(config.getWorkspace().getPath());
+		
+		config.getWorkspace().getTargetDirectories().forEach(targetDirectory ->{
+			TargetExtensionController targetExtension = new TargetExtensionController();
+			targetExtension.txtExtension.setText(targetDirectory.getExtension());
+			targetExtension.txtTargetDirectory.setText(targetDirectory.getName());
+			targetExtension.txtProgramPath.setText(getProgramPathByExtensionName(targetDirectory.getExtension()));
+			boxExtensions.getChildren().add(targetExtension);
+		});
+		
+	}
+	
+	private String getProgramPathByExtensionName(String extensionName){
+		Optional<String> option = Configs.getConfig().getExtensions().stream()
+			.filter(
+				predicate -> predicate.getName().equals(extensionName)
+		)	.map(
+				mapper -> mapper.getProgramPath())
+			.findFirst();
+		
+		return option.orElse("");
+	}
+	
 	
 	
 	

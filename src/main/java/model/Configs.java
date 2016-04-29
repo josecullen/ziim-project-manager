@@ -9,19 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import model.config.Config;
+
 public class Configs {
 	
 	public static final String CONFIG_PATH = "./config.txt";	
-	private static Map<String, String> configs;	
+	private static Map<String, String> configs;
+	private static Config config;
 	private static Logger logger = Logger.getGlobal();
 	private static File file;
 	
 	static{
 		configs = new HashMap<>();
+		
 		file = new File(CONFIG_PATH);
 		if(!file.exists()){
 			try {
 				file.createNewFile();
+				config = new Config();
+				save(config);
 			} catch (IOException e) {
 				logger.warning("No se puede crear el archivo de configuración: "+e.getMessage());
 			}
@@ -35,37 +43,31 @@ public class Configs {
 
 	private static void setValuesFromFile() {
 		try {
-			FileReader reader = new FileReader(file);
-			BufferedReader bufferReader = new BufferedReader(reader);
 			
-			String keyValue = bufferReader.readLine();
-			
-			while(keyValue != null){
-				String key = keyValue.split("=")[0];
-				String value = keyValue.split("=")[1];
-				
-				configs.put(key, value);
-				
-				keyValue = bufferReader.readLine();
-			}
+			config = new ObjectMapper().readValue(file, Config.class);
+
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 
-
-
 	public static Map<String, String> configs() {
 		return configs;
 	}
 
+	public static void save(Config config){
+		try {
+			new ObjectMapper().writeValue(file, config);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	
-	
+	public static Config getConfig(){
+		return config;
+	}
 	
 }

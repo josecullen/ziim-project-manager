@@ -1,7 +1,7 @@
 import {Component, Output, EventEmitter} from 'angular2/core';
 import {AppServices} from './services';
 import {HTTP_PROVIDERS} from 'angular2/http';
-import {ProjectRoot} from './models';
+import {WorkspaceRoot} from './models';
 
 @Component({
     selector: 'url-input',
@@ -23,7 +23,7 @@ export class UrlInputComponent {
     ngOnInit() {
         this.services.getProjectDirectory().subscribe(
             res => {
-                this.openEvent.emit(<ProjectRoot>res);
+                this.openEvent.emit(<WorkspaceRoot>res);
             },
             error => console.log("ERROR")
             )
@@ -33,7 +33,7 @@ export class UrlInputComponent {
     open(path: string, target: string) {
         this.services.getProjectFromPath(path, target).subscribe(
             res => {
-                this.openEvent.emit(<ProjectRoot>res);
+                this.openEvent.emit(<WorkspaceRoot>res);
             },
             error => console.log("ERROR")
             )

@@ -13,7 +13,7 @@ import javafx.stage.FileChooser;
 
 public class TargetExtensionController extends HBox {
 	
-	private FileChooser fileChooser;
+	private FileChooser fileChooser = new FileChooser();
 	
 	@FXML TextField txtTargetDirectory;
 	@FXML TextField txtExtension;
@@ -22,8 +22,6 @@ public class TargetExtensionController extends HBox {
 	@FXML Button btnRemove;
 	
 	public TargetExtensionController() {
-		
-		
 		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TargetExtension.fxml"));

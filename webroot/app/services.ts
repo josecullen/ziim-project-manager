@@ -2,7 +2,7 @@ import {Injectable, Inject} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
-import {ProjectRoot} from './models';
+import {WorkspaceRoot} from './models';
 
 @Injectable()
 export class AppServices {
@@ -10,10 +10,10 @@ export class AppServices {
 
     constructor(private http: Http) { }
 
-    getProjectFromPath(path: string, target: string): ProjectRoot {
+    getProjectFromPath(path: string, target: string): WorkspaceRoot {
         return this.http.get(Path[Path.project_from_string] + "?path=" + path + "&target=" + target)
             .map(res => {
-                return <ProjectRoot>JSON.parse(res._body);
+                return <WorkspaceRoot>JSON.parse(res._body);
             });
     }
 
@@ -22,10 +22,11 @@ export class AppServices {
         return this.http.get(Path[Path.run] + "?path=" + path).map(res => res);
     }
 
-    getProjectDirectory() {
+    getProjectDirectory():WorkspaceRoot {
         return this.http.get(Path[Path.project_directory])
             .map(res => {
-                return <ProjectRoot>JSON.parse(res._body);
+                console.log(JSON.parse(res._body));
+                return <WorkspaceRoot>JSON.parse(res._body);
             });
     }
 

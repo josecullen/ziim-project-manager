@@ -1,10 +1,13 @@
 package webapp.vim_manager_app;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -13,6 +16,9 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.impl.StaticHandlerImpl;
 import io.vertx.ext.web.impl.RouterImpl;
 import model.Configs;
+import model.WorkspaceRoot;
+import model.config.Config;
+import model.config.ConfigTargetDirectory;
 
 /**
  * Hello world!
@@ -22,7 +28,7 @@ public class App {
 	
 	static Logger logger = Logger.getGlobal();
     private static final int PORT = 8010;
-    private static Map<String, String> configs = Configs.configs();
+    private static Config configs = Configs.getConfig();
     private static HttpServer server;
     private static Vertx vertx;
     
@@ -38,7 +44,7 @@ public class App {
 		logger.addHandler(fh); 		
         SimpleFormatter formatter = new SimpleFormatter();  
         fh.setFormatter(formatter);  
-
+        
 		logger.info("Inicio");
 		
     	vertx = Vertx.factory.vertx();
@@ -46,6 +52,8 @@ public class App {
 		server = vertx.createHttpServer();
 		
 		Router router = new RouterImpl(vertx);
+		
+		System.out.println(configs);
 		
 		router.route("/").handler(handler -> {
 			handler.response().sendFile("webroot/index.html");
@@ -56,10 +64,14 @@ public class App {
 			String path = context.request().params().get("path");
 			
 			try {
-				String command = "\""+configs.get(getExtension(path))+"\" "+ "\""+path+"\"";
-				logger.info(command);
-				Runtime rt = Runtime.getRuntime();
-				Process pr = rt.exec(command);			
+//				String command = "\""+configs.get(getExtension(path))+"\" "+ "\""+path+"\"";
+//				String command = configs.getExtensions()
+//						.stream()
+//						.filter(predicate -> predicate)
+						
+//				logger.info(command);
+//				Runtime rt = Runtime.getRuntime();
+//				Process pr = rt.exec(command);			
 				
 //				Process process = new ProcessBuilder(path).start();
 			} catch (Exception e) {
@@ -76,7 +88,7 @@ public class App {
 			
 			JsonObject files = null;
 			try {
-				files = FileFilter.getListFiles(path, target);
+//				files = FileFilter.getListFiles(path, target);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -85,18 +97,20 @@ public class App {
 		});
 		
 		router.route("/"+PATH.project_directory).handler(context ->{
-			String projectDirectory = configs.get("project-directory");
-			String targets = configs.get("targets");
+			String workspaceDirectory = configs.getWorkspace().getPath();//configs.get("project-directory");
+			List<ConfigTargetDirectory> targets = configs.getWorkspace().getTargetDirectories();
 			
 			JsonObject files = new JsonObject();
-			if(projectDirectory != null && targets != null){
+			if(workspaceDirectory != null && !targets.isEmpty()){
 				try {
-					files = FileFilter.getListFiles(projectDirectory, targets);
+					String result = new ObjectMapper().writeValueAsString(new WorkspaceRoot(configs));
+					files = new JsonObject(result);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				
 			}
+			System.out.println(files.encodePrettily());
 			context.response().end(files.encode());
 		
 		});

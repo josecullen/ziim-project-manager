@@ -1,7 +1,7 @@
 import {Component} from 'angular2/core';
 import { UrlInputComponent } from './url-input.component';
 import {ProjectListComponent} from './project-list.component';
-import {ProjectRoot} from './models';
+import {WorkspaceRoot} from './models';
 
 @Component({
     selector: 'admin',
@@ -10,9 +10,9 @@ import {ProjectRoot} from './models';
 })
 
 export class AppComponent {
-	projectRoot:ProjectRoot = new ProjectRoot();
+	workspaceRoot:WorkspaceRoot = new WorkspaceRoot();
 
 	print(){
-		console.log("projectRoot ", this.projectRoot);
+		console.log("workspaceRoot ", this.workspaceRoot);
 	}
 }
