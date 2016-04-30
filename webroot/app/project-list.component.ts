@@ -11,23 +11,33 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 })
 export class ProjectListComponent {
 	@Input() workspaceRoot:WorkspaceRoot = new WorkspaceRoot();
-
+	project:ProjectRoot = new ProjectRoot();
 	constructor(private services:AppServices){}
 
 	ngOnInit() {
         this.services.getProjectDirectory().subscribe(
             res => {
                 this.workspaceRoot = <WorkspaceRoot>res;
+                this.project = this.workspaceRoot.projectRoots[0];
             },
             error => console.log("ERROR")
             )
 
     }
 
+    display(){
+    	return this.project != undefined ? 'inline-block' : 'none';
+    }
 
+    print(project:ProjectRoot){
+    	console.log("project ",project);
+    }
+
+    setProject(p){
+    	this.project = this.workspaceRoot.projectRoots[p];
+    }
 
 	createFloors(targetDirectory:TargetDirectory):Array<SystemDirectory>{
-		console.log(targetDirectory);
 		let floors:Array<SystemDirectory> = new Array();
 		
 		targetDirectory.systemDirectories[0].files.forEach(sysDir => floors.push(new SystemDirectory()))
@@ -37,11 +47,14 @@ export class ProjectListComponent {
 			.forEach(files => {
 				let count = 0;
 				let subLevels = 0;
+				console.log(count + " " + subLevels);
+				
 				files
 					.filter(file => file.name.substr(0,1) == "S")
-					.forEach(file => subLevels++)
+					.forEach(file => console.log("subLevels ",subLevels++))
 
 				count = subLevels-1;
+				console.log(count + " " + subLevels);
 
 				files
 					.filter(file => file.name.substr(0,1) == "S")
@@ -51,6 +64,7 @@ export class ProjectListComponent {
 					})
 
 				count = subLevels;
+				console.log(count + " " + subLevels);
 
 				files
 					.filter(file => file.name.substr(0,1) != "S")
@@ -66,18 +80,22 @@ export class ProjectListComponent {
 	filterSystemName(name:string):string{
 		var result = name.split("-");
 		result.shift();
-		return result.reduce((value,newVal) => value += "-"+newVal);
+		if(result.length > 0)
+			return result.reduce((value,newVal) => value += "-"+newVal);
+		else 
+			return name;
 	}
 
 	filterFileName(name:string):string{
 		var result = name.split(".")[0].split("-");
 		result.shift();
-		return result.reduce((value,newVal) => value += "-"+newVal);
+		if(result.length > 0)
+			return result.reduce((value,newVal) => value += "-"+newVal);
+		else name;
 	}
 
 
 	runFile(path:string){
-		console.log("runFile path ", path)
 		this.services.runFile(path).subscribe(
 			res => console.log("OK"),
 			error => console.log("ERROR")

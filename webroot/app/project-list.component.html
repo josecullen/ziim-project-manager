@@ -1,15 +1,16 @@
-<div class="col-xs-12" *ngFor="#projectRoot of workspaceRoot.projectRoots">
-	<h1>{{projectRoot.name}}</h1>
-
-	<table class="table table-striped">
+<select (change)="setProject($event.target.selectedIndex)">
+	<option *ngFor="#projectRoot of workspaceRoot.projectRoots; #p = index" value="p">{{projectRoot.name}} </option>
+</select>
+	<h1>{{project.name}}</h1>
+	<table class="table table-striped" >
 		<thead>
 			<tr>
 				<th>Pisos</th>					
-				<th *ngFor="#systemDir of projectRoot.targetDirectories[0].systemDirectories">{{filterSystemName(systemDir.name)}}<th>
+				<th *ngFor="#systemDir of project.targetDirectories[0].systemDirectories">{{filterSystemName(systemDir.name)}}<th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="#floor of createFloors(projectRoot.targetDirectories[0]); #p = index">
+			<tr *ngFor="#floor of createFloors(project.targetDirectories[0])">
 				<td>{{floor.floor}}</td>
 				<td *ngFor="#file of floor.files">
 					<a (click)="runFile(file.path)">{{filterFileName(file.name)}}</a>
@@ -18,4 +19,3 @@
 		</tbody>
 	</table>
 
-</div>
