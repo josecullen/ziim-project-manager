@@ -12,6 +12,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 export class ProjectListComponent {
 	@Input() workspaceRoot:WorkspaceRoot = new WorkspaceRoot();
 	project:ProjectRoot = new ProjectRoot();
+	target:TargetDirectory = new TargetDirectory();
 	constructor(private services:AppServices){}
 
 	ngOnInit() {
@@ -19,6 +20,7 @@ export class ProjectListComponent {
             res => {
                 this.workspaceRoot = <WorkspaceRoot>res;
                 this.project = this.workspaceRoot.projectRoots[0];
+                this.target = this.project.targetDirectories[0];
             },
             error => console.log("ERROR")
             )
@@ -37,6 +39,10 @@ export class ProjectListComponent {
     	this.project = this.workspaceRoot.projectRoots[p];
     }
 
+    selectTarget(t){
+    	this.target = this.project.targetDirectories[t];
+    }
+
 	createFloors(targetDirectory:TargetDirectory):Array<SystemDirectory>{
 		let floors:Array<SystemDirectory> = new Array();
 		
@@ -47,14 +53,12 @@ export class ProjectListComponent {
 			.forEach(files => {
 				let count = 0;
 				let subLevels = 0;
-				console.log(count + " " + subLevels);
 				
 				files
 					.filter(file => file.name.substr(0,1) == "S")
 					.forEach(file => console.log("subLevels ",subLevels++))
 
 				count = subLevels-1;
-				console.log(count + " " + subLevels);
 
 				files
 					.filter(file => file.name.substr(0,1) == "S")
@@ -64,7 +68,6 @@ export class ProjectListComponent {
 					})
 
 				count = subLevels;
-				console.log(count + " " + subLevels);
 
 				files
 					.filter(file => file.name.substr(0,1) != "S")

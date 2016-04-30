@@ -2,15 +2,16 @@
 	<option *ngFor="#projectRoot of workspaceRoot.projectRoots; #p = index" value="p">{{projectRoot.name}} </option>
 </select>
 	<h1>{{project.name}}</h1>
+	<button *ngFor="#targetButton of project.targetDirectories; #t = index" (click)="selectTarget(t)">{{targetButton.name}}</button>{{target.name}}
 	<table class="table table-striped" >
 		<thead>
 			<tr>
 				<th>Pisos</th>					
-				<th *ngFor="#systemDir of project.targetDirectories[0].systemDirectories">{{filterSystemName(systemDir.name)}}<th>
+				<th *ngFor="#systemDir of target.systemDirectories">{{filterSystemName(systemDir.name)}}<th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="#floor of createFloors(project.targetDirectories[0])">
+			<tr *ngFor="#floor of createFloors(target)">
 				<td>{{floor.floor}}</td>
 				<td *ngFor="#file of floor.files">
 					<a (click)="runFile(file.path)">{{filterFileName(file.name)}}</a>
