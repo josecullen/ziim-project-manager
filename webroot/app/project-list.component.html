@@ -5,14 +5,14 @@
 		<thead>
 			<tr>
 				<th>Pisos</th>					
-				<th *ngFor="#systemDir of projectRoot.targetDirectories[0].systemDirectories">{{systemDir.name}}<th>
+				<th *ngFor="#systemDir of projectRoot.targetDirectories[0].systemDirectories">{{filterSystemName(systemDir.name)}}<th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="#floor of createFloors(projectRoot.targetDirectories[0]); #p = index">
 				<td>{{floor.floor}}</td>
 				<td *ngFor="#file of floor.files">
-					<a (click)="runFile(file.path)">{{filterName(file.name)}}</a>
+					<a (click)="runFile(file.path)">{{filterFileName(file.name)}}</a>
 				</td>
 			</tr>
 		</tbody>

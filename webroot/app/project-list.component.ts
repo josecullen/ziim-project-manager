@@ -24,12 +24,22 @@ export class ProjectListComponent {
 			.map(sysDir => sysDir.files)
 			.forEach(files => {
 				let count = 0;
+				let subLevels = 0;
+				files
+					.filter(file => file.name.substr(0,1) == "S")
+					.forEach(file => subLevels++)
+
+				count = subLevels-1;
+
 				files
 					.filter(file => file.name.substr(0,1) == "S")
 					.forEach(file => {
 						floors[count].floor = file.name.substr(0,3)
-						floors[count++].files.push(file)
+						floors[count--].files.push(file)
 					})
+
+				count = subLevels;
+
 				files
 					.filter(file => file.name.substr(0,1) != "S")
 					.forEach(file => {
@@ -41,7 +51,13 @@ export class ProjectListComponent {
 		return floors;
 	}	
 
-	filterName(name:string):string{
+	filterSystemName(name:string):string{
+		var result = name.split("-");
+		result.shift();
+		return result.reduce((value,newVal) => value += "-"+newVal);
+	}
+
+	filterFileName(name:string):string{
 		var result = name.split(".")[0].split("-");
 		result.shift();
 		return result.reduce((value,newVal) => value += "-"+newVal);
