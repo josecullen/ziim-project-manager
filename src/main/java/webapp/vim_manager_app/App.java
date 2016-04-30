@@ -173,7 +173,7 @@ public class App {
 										e.printStackTrace();
 									}
 								}
-								for(int level = 0; level < newProjectConfig.getSubLevels()+1; level++){
+								for(int level = 0; level < newProjectConfig.getLevels()+1; level++){
 									File levelFile = null;
 									if(level < 10){
 										levelFile = new File(systemFolder+
