@@ -14,6 +14,18 @@ export class ProjectListComponent {
 
 	constructor(private services:AppServices){}
 
+	ngOnInit() {
+        this.services.getProjectDirectory().subscribe(
+            res => {
+                this.workspaceRoot = <WorkspaceRoot>res;
+            },
+            error => console.log("ERROR")
+            )
+
+    }
+
+
+
 	createFloors(targetDirectory:TargetDirectory):Array<SystemDirectory>{
 		console.log(targetDirectory);
 		let floors:Array<SystemDirectory> = new Array();
