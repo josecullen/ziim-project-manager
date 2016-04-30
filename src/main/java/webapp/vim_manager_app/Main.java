@@ -41,8 +41,6 @@ public class Main extends Application {
 		WebEngine webEngine = webView.getEngine();
 		webEngine.load("http://127.0.0.1:8010");
 		
-		 
-		
 		
 		borderPane.setCenter(stackPane);
 		borderPane.setTop(new HBox(btn,btnToggle));

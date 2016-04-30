@@ -34,7 +34,8 @@ public class TargetExtensionController extends HBox {
 		
 		btnSelectProgram.setOnAction(event ->{
 			File program = fileChooser.showOpenDialog(null);
-			txtProgramPath.setText(program.getAbsolutePath());
+			if(program != null)
+				txtProgramPath.setText(program.getAbsolutePath());
 		});
 		
 		btnRemove.setOnAction(event ->{

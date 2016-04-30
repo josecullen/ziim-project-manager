@@ -30,9 +30,17 @@ export class AppServices {
             });
     }
 
+    createProject(projectName:string, levels:number, subLevels:number){
+        return this.http.get(Path[Path.new_project] + "?projectName=" + projectName + "&levels=" + levels+"&subLevels="+subLevels)
+            .map(res => {
+                return "ok";
+            });
+    }
+
+
 }
 
 
 enum Path {
-    run, project_from_string, project_directory
+    run, project_from_string, project_directory,new_project
 }

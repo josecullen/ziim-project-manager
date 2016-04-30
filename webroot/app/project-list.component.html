@@ -1,6 +1,18 @@
 <select (change)="setProject($event.target.selectedIndex)">
 	<option *ngFor="#projectRoot of workspaceRoot.projectRoots; #p = index" value="p">{{projectRoot.name}} </option>
 </select>
+<button class="btn btn-primary" (click)="newProjectView = true">Nuevo Proyecto</button>
+<div *ngIf="newProjectView">
+	<label>Nombre del Proyecto</label>
+		<input #projectName type="text" placeholder="Nombre del Projecto" value="NuevoProyecto">
+	<label>Cantidad de Pisos</label>
+		<input #levels type="number" value="5">
+	<label>Cantidad de Subsuelos</label>
+	<input #subLevels type="number" value="2">
+	<button class="btn btn-success" (click)="createProject(projectName.value, levels.value, subLevels.value)">Crear</button>
+	<button class="btn btn-error" (click)="newProjectView = false">Cancelar</button>
+</div>
+
 	<h1>{{project.name}}</h1>
 	<button *ngFor="#targetButton of project.targetDirectories; #t = index" (click)="selectTarget(t)">{{targetButton.name}}</button>{{target.name}}
 	<table class="table table-striped" >

@@ -13,10 +13,17 @@ export class ProjectListComponent {
 	@Input() workspaceRoot:WorkspaceRoot = new WorkspaceRoot();
 	project:ProjectRoot = new ProjectRoot();
 	target:TargetDirectory = new TargetDirectory();
+	newProjectView:boolean = false;
 	constructor(private services:AppServices){}
 
+
+
 	ngOnInit() {
-        this.services.getProjectDirectory().subscribe(
+        this.setWorkspace();
+    }
+
+    setWorkspace(){
+    	this.services.getProjectDirectory().subscribe(
             res => {
                 this.workspaceRoot = <WorkspaceRoot>res;
                 this.project = this.workspaceRoot.projectRoots[0];
@@ -24,7 +31,16 @@ export class ProjectListComponent {
             },
             error => console.log("ERROR")
             )
+    }
 
+    createProject(projectName:string, levels:number, subLevels:number){
+    	this.services.createProject(projectName,levels,subLevels).subscribe(
+    		res => {
+    			this.setWorkspace();
+    			this.newProjectView = false;
+    		},
+            error => console.log("ERROR")
+    		)
     }
 
     display(){
@@ -56,7 +72,7 @@ export class ProjectListComponent {
 				
 				files
 					.filter(file => file.name.substr(0,1) == "S")
-					.forEach(file => console.log("subLevels ",subLevels++))
+					.forEach(file => subLevels++)
 
 				count = subLevels-1;
 

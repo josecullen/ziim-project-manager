@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<exec.mainClass>webapp.vim_manager_app.App</exec.mainClass>
+		<exec.mainClass>webapp.vim_manager_app.Main</exec.mainClass>
 	</properties>
 
 	<dependencies>

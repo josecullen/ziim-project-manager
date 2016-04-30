@@ -1,18 +1,4 @@
-abr 29, 2016 11:41:24 PM webapp.vim_manager_app.App main
+abr 30, 2016 5:48:51 PM webapp.vim_manager_app.App main
 INFO: Inicio
-abr 29, 2016 11:41:25 PM webapp.vim_manager_app.App main
+abr 30, 2016 5:48:53 PM webapp.vim_manager_app.App main
 INFO: Server open in port 8010
-abr 29, 2016 11:45:19 PM webapp.vim_manager_app.App lambda$1
-INFO: run
-abr 29, 2016 11:45:19 PM webapp.vim_manager_app.App lambda$1
-INFO: "Optional[C:\Program Files\Sublime Text 3\sublime_text.exe]" "C:\Users\jcullen\Documents\joseji\TRABAJOS\1rodeMayo\dwf\01-EST\S01-EST.dwf"
-abr 29, 2016 11:45:19 PM webapp.vim_manager_app.App lambda$1
-WARNING: Cannot run program ""Optional[C:\Program": CreateProcess error=2, The system cannot find the file specified
-abr 29, 2016 11:46:13 PM webapp.vim_manager_app.App lambda$1
-INFO: run
-abr 29, 2016 11:46:13 PM webapp.vim_manager_app.App lambda$1
-INFO: "C:\Program Files\Sublime Text 3\sublime_text.exe" "C:\Users\jcullen\Documents\joseji\TRABAJOS\1rodeMayo\dwf\01-EST\S01-EST.dwf"
-abr 30, 2016 12:43:09 AM webapp.vim_manager_app.App lambda$1
-INFO: run
-abr 30, 2016 12:43:09 AM webapp.vim_manager_app.App lambda$1
-INFO: "C:\Program Files\Sublime Text 3\sublime_text.exe" "C:\Users\jcullen\Documents\joseji\TRABAJOS\2doDeMayo\dwf\04-CL-PL\01-CL-PL.dwf"
