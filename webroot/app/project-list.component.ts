@@ -15,26 +15,38 @@ export class ProjectListComponent {
 	constructor(private services:AppServices){}
 
 	createFloors(targetDirectory:TargetDirectory):Array<SystemDirectory>{
+		console.log(targetDirectory);
 		let floors:Array<SystemDirectory> = new Array();
+		
+		targetDirectory.systemDirectories[0].files.forEach(sysDir => floors.push(new SystemDirectory()))
 
-		targetDirectory.systemDirectories.forEach(function(systemDirectory){
-			systemDirectory.files.forEach(function(file){
-				let floorNumber:number = parseInt(file.name.split("-")[0]);
-				
-				if(floors.length -1 < floorNumber){
-					floors.push(new SystemDirectory());
-				}
-				if(floorNumber == 99){
-					floors[floors.length-1].files.push(file);	
-				}else{
-					floors[floorNumber].files.push(file);	
-				}
-				
+		targetDirectory.systemDirectories
+			.map(sysDir => sysDir.files)
+			.forEach(files => {
+				let count = 0;
+				files
+					.filter(file => file.name.substr(0,1) == "S")
+					.forEach(file => {
+						floors[count].floor = file.name.substr(0,3)
+						floors[count++].files.push(file)
+					})
+				files
+					.filter(file => file.name.substr(0,1) != "S")
+					.forEach(file => {
+						floors[count].floor = file.name.substr(0,2)
+						floors[count++].files.push(file)
+					})
 			});
-		});
 
 		return floors;
 	}	
+
+	filterName(name:string):string{
+		var result = name.split(".")[0].split("-");
+		result.shift();
+		return result.reduce((value,newVal) => value += "-"+newVal);
+	}
+
 
 	runFile(path:string){
 		console.log("runFile path ", path)

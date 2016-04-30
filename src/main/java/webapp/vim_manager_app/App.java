@@ -1,8 +1,9 @@
 package webapp.vim_manager_app;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -59,19 +60,25 @@ public class App {
 			handler.response().sendFile("webroot/index.html");
 		});
 
+		
 		router.route("/"+PATH.run).handler(context ->{
 			logger.info(PATH.run.name());
 			String path = context.request().params().get("path");
 			
 			try {
-//				String command = "\""+configs.get(getExtension(path))+"\" "+ "\""+path+"\"";
-//				String command = configs.getExtensions()
-//						.stream()
-//						.filter(predicate -> predicate)
-						
-//				logger.info(command);
-//				Runtime rt = Runtime.getRuntime();
-//				Process pr = rt.exec(command);			
+				File file =	 new File(path);
+				String[] splitPoint = file.getName().split("\\.");
+				String ext = splitPoint[splitPoint.length-1];
+				Optional<String> programPath = configs.getExtensions()
+					.stream()
+					.filter(extension -> extension.getName().equals(ext))
+					.map(extension -> extension.getProgramPath())
+					.findFirst();
+				String command = "\""+programPath.get() +"\""+" \""+path+"\"";
+
+				logger.info(command);
+				Runtime rt = Runtime.getRuntime();
+				Process pr = rt.exec(command);			
 				
 //				Process process = new ProcessBuilder(path).start();
 			} catch (Exception e) {

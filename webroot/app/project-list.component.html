@@ -10,9 +10,9 @@
 		</thead>
 		<tbody>
 			<tr *ngFor="#floor of createFloors(projectRoot.targetDirectories[0]); #p = index">
-				<td>Piso {{p}}</td>
+				<td>{{floor.floor}}</td>
 				<td *ngFor="#file of floor.files">
-					<a (click)="runFile(file.path)">{{file.name}}</a>
+					<a (click)="runFile(file.path)">{{filterName(file.name)}}</a>
 				</td>
 			</tr>
 		</tbody>

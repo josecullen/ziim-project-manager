@@ -1,5 +1,5 @@
-class FileBase{
-	constructor(public name:string = "", public path:string = ""){}
+export class FileBase{
+	constructor(public name:string = "", public path:string = "", public floor?:string ){}
 }
 
 export class WorkspaceRoot extends FileBase{
